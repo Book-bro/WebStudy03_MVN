@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp"/>
+<jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
 <table>
@@ -22,7 +22,7 @@
 		</tr>
 	</thead>
 	<tbody id="listBody">
-<%-- 		<c:set var="prodList" value="${pagingVO.dataList }"/> --%>
+<%-- 		<c:set var="prodList" value="${pagingVO.dataList }" /> --%>
 <%-- 		<c:choose> --%>
 <%-- 			<c:when test="${not empty prodList }"> --%>
 <%-- 				<c:forEach items="${prodList }" var="prod"> --%>
@@ -66,7 +66,7 @@
 						</c:forEach>
 					</select>
 					<input type="text" name="prodName" placeholder="상품명"/>
-					<input type="button" value="검색" id="searchBtn" />
+					<input type="button" value="검색" id="searchBtn"  />
 				</div>
 			</td>
 		</tr>
@@ -80,7 +80,7 @@
 	<input type="text" name="prodName" placeholder="상품명"/>
 </form>
 <script type="text/javascript">
-	$("[name=prodLgu]").on("change",function(){
+	$("[name=prodLgu]").on("change", function(){
 		let prodLgu = $(this).val();
 		prodBuyerTag.find("option:gt(0)").hide();
 		prodBuyerTag.find("option."+prodLgu).show();
@@ -91,9 +91,7 @@
 	let pagingArea = $(".pagingArea").on("click", "a.paging", function(event){
 		event.preventDefault();
 		let page = $(this).data("page");
-		if(!page){
-			return false;
-		}
+		if(!page) return false;
 		searchForm.find("[name=page]").val(page);
 		searchForm.submit();
 		return false;
@@ -104,14 +102,15 @@
 					.attr("href", "${pageContext.request.contextPath}/prod/prodView.do?what="+prod.prodId)
 					.html(prod.prodName);
 		return $("<tr>").append(
-				$("<td>").html(prod.rnum)
-				, $("<td>").html(aTag)
-				, $("<td>").html(prod.lprodNm)
-				, $("<td>").html(prod.buyer.buyerName)
-				, $("<td>").html(prod.prodCost)
-				, $("<td>").html(prod.prodPrice)
-				, $("<td>").html(prod.memCount)
-			);
+					$("<td>").html(prod.rnum)
+					, $("<td>").html(aTag)
+					, $("<td>").html(prod.lprodNm)
+					, $("<td>").html(prod.buyer.buyerName)
+					, $("<td>").html(prod.prodCost)
+					, $("<td>").html(prod.prodPrice)
+					, $("<td>").html(prod.memCount)
+					
+				);
 	}
 	
 	let searchForm = $("#searchForm").on("submit", function(event){
@@ -132,7 +131,7 @@
 				
 				let pagingVO = resp.pagingVO;
 				
-				let dataList = pagingVO.dataList
+				let dataList = pagingVO.dataList;
 				let trTags = [];
 				if(dataList){
 					$.each(dataList, function(index, prod){
@@ -140,13 +139,13 @@
 					});
 				}else{
 					let tr = $("<tr>").html(
-						$("<td>").attr("colspan","7")
+						$("<td>").attr("colspan", "7")
 								.html("조건에 맞는 상품 없음.")
-					);
+					);	
 					trTags.push(tr);
 				}
 				listBody.html(trTags);
-				pagingArea.html(pagingVO.pagingHTML);
+				pagingArea.html(pagingVO.pagingHTML);				
 			},
 			error : function(jqXHR, status, error) {
 				console.log(jqXHR);
@@ -169,9 +168,13 @@
 	});
 	
 </script>
-<jsp:include page="/includee/postScript.jsp"/>
+<jsp:include page="/includee/postScript.jsp" />
 </body>
 </html>
+
+
+
+
 
 
 

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,7 @@
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-	<table>
+	<table class="table table-bordered">
 		<tr>
 			<th>상품아이디</th>
 			<td>${prod.prodId}</td>
@@ -20,8 +20,12 @@
 		</tr>
 		<tr>
 			<th>상품분류</th>
+			<td>${prod.lprodNm}</td>
+		</tr>
+		<tr>
+			<th>거래처</th>
 			<td>
-				<table>
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>거래처명</th>
@@ -30,13 +34,13 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:set var="buyer" value="${prod.buyer }"/>
+						<c:set var="buyer" value="${prod.buyer }" />
 						<tr>
 							<td>
-								<c:url value="/buyer/buyerView.do" var="buyerViewURI">
-									<c:param name="what" value="${buyer.buyerId }"/>
+								<c:url value="/buyer/buyerView.do" var="buyerViewURL">
+									<c:param name="what" value="${prod.prodBuyer }" />
 								</c:url>
-								<a href="${buyerViewURI }">${buyer.buyerName }</a>
+								<a href="${buyerViewURL }">${buyer.buyerName }</a>
 							</td>
 							<td>${buyer.buyerCharger }</td>
 							<td>${buyer.buyerAdd1 }</td>
@@ -44,10 +48,6 @@
 					</tbody>
 				</table>
 			</td>
-		</tr>
-		<tr>
-			<th>거래처</th>
-			<td>${prod.prodBuyer}</td>
 		</tr>
 		<tr>
 			<th>구매가</th>
@@ -114,9 +114,15 @@
 			<td>${prod.prodMileage}</td>
 		</tr>
 		<tr>
+			<td colspan="2">
+				<c:url value='/prod/prodList.do' var="listURL"/>
+				<a class="btn btn-secondary" href="${listURL }">목록으로</a>
+			</td>
+		</tr>
+		<tr>
 			<th>구매자목록</th>
 			<td>
-				<table>
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>구매자명</th>
@@ -127,9 +133,9 @@
 					<tbody>
 						<c:choose>
 							<c:when test="${not empty prod.memberSet }">
-								<c:forEach items="${prod.memberSet}" var="user">
+								<c:forEach items="${prod.memberSet }" var="user">
 									<c:url value="/member/memberView.do" var="memberViewURL">
-										<c:param name="who" value="${user.memId }"/>
+										<c:param name="who" value="${user.memId }" />
 									</c:url>
 									<tr>
 										<td>
@@ -151,8 +157,18 @@
 			</td>
 		</tr>
 	</table>
-
-
-	<jsp:include page="/includee/postScript.jsp" />
+<jsp:include page="/includee/postScript.jsp" />	
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

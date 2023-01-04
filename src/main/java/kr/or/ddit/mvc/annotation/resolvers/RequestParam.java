@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface RequestParam {
-	String value();
-	boolean required() default true;
-	String defaultValue() default "";
+	String value(); //파라미터 이름
+	boolean required() default true; //해당 파라미터가 필수인지 여부
+	String defaultValue() default ""; //파라미터 값이 없을시 기본값
 }

@@ -77,8 +77,8 @@
 </form>
 
 <script type="text/javascript">
-	$("[name=searchType]").val("${searchvo.searchType}")
-	$("[name=searchWord]").val("${searchvo.searchWord}")
+	$("[name=searchType]").val("${searchVO.searchType}")
+	$("[name=searchWord]").val("${searchVO.searchWord}")
 	
 	let searchForm = $("#searchForm");
 	let searchUI = $("#searchUI").on("click", "#searchBtn", function(){

@@ -19,38 +19,48 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import kr.or.ddit.memo.dao.DataBaseMemoDAOImpl;
 import kr.or.ddit.memo.dao.MemoDAO;
 import kr.or.ddit.memo.dao.MemoDAOImpl;
+import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
+import kr.or.ddit.mvc.annotation.stereotype.Controller;
+import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
 import kr.or.ddit.vo.MemoVO;
 
-@WebServlet("/memo")
-public class MemoControllerServlet extends HttpServlet{
-	private static final Logger log = LoggerFactory.getLogger(MemoControllerServlet.class);
+@Controller
+public class MemoController{
+	private static final Logger log = LoggerFactory.getLogger(MemoController.class);
 	
 //	private MemoDAO dao = FileSystemMemoDAOImpl.getInstance();
 //	private MemoDAO dao = DataBaseMemoDAOImpl.getInstance();
 	private MemoDAO dao = new MemoDAOImpl();
 	
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping("/memo")
+	public String doGet(
+//			@RequestHeader("Accept") String accept
+			HttpServletRequest req
+			, HttpServletResponse resp
+	) throws ServletException, IOException {
 		String accept = req.getHeader("Accept");
 		log.info("accept header : {}", accept);
 		if(accept.contains("xml")) {
 			resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			return;
+			return null;
 		}
 		
 		List<MemoVO> memoList = dao.selectMemoList();
 		req.setAttribute("memoList", memoList);
-		String viewName = "/jsonView.do";
-		req.getRequestDispatcher(viewName).forward(req, resp);
+		String viewName = "forward:/jsonView.do";
+		return viewName;
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value="/memo", method=RequestMethod.POST)
+	public String doPost(
+			HttpServletRequest req
+			) throws ServletException, IOException {
 //		Post-Redirect-Get : PRG pattern
 		MemoVO memo = getMemoFromRequest(req);
 		dao.insertMemo(memo);
-		resp.sendRedirect(req.getContextPath()+"/memo"); //다시 돌아가서 리스트 갱신
+		return "redirect:/memo"; //다시 돌아가서 리스트 갱신
 	}
 	
 	private MemoVO getMemoFromRequest(HttpServletRequest req) throws IOException{
@@ -99,13 +109,14 @@ public class MemoControllerServlet extends HttpServlet{
 //		return memo;
 	}
 
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+	@RequestMapping(value="/memo", method=RequestMethod.PUT)
+	public String doPut(HttpServletRequest req) throws ServletException, IOException {
+		return null;
 	}
 	
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value="/memo", method=RequestMethod.DELETE)
+	public String doDelete(HttpServletRequest req) throws ServletException, IOException {
+		return null;
 		
 	}
 }

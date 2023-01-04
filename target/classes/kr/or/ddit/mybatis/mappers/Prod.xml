@@ -77,5 +77,93 @@
       FROM   PRODVIEW LEFT OUTER JOIN CARTVIEW ON (PROD_ID = CART_PROD)
       WHERE   PROD_ID = #{prodId}  
 	</select>
+	
+	<insert id="insertProd" parameterType="ProdVO">
+		INSERT INTO PROD(
+			PROD_ID
+			, PROD_NAME
+			, PROD_LGU
+			, PROD_BUYER
+			, PROD_COST
+			, PROD_PRICE
+			, PROD_SALE
+			, PROD_OUTLINE
+			, PROD_DETAIL
+			, PROD_IMG
+			, PROD_TOTALSTOCK
+			, PROD_INSDATE
+			, PROD_PROPERSTOCK
+			, PROD_SIZE
+			, PROD_COLOR
+			, PROD_DELIVERY
+			, PROD_UNIT
+			, PROD_QTYIN
+			, PROD_QTYSALE
+			, PROD_MILEAGE
+		)
+		SELECT #{prodLgu,jdbcType=CHAR}||
+		    LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PROD_ID),5)),0)+1,6,'0')
+		    , #{prodName,jdbcType=VARCHAR}
+			, #{prodLgu,jdbcType=CHAR}
+			, #{prodBuyer,jdbcType=CHAR}
+			, #{prodCost,jdbcType=NUMERIC}
+			, #{prodPrice,jdbcType=NUMERIC}
+			, #{prodSale,jdbcType=NUMERIC}
+			, #{prodOutline,jdbcType=VARCHAR}
+			, #{prodDetail,jdbcType=CLOB}
+			, #{prodImg,jdbcType=VARCHAR}
+			, #{prodTotalstock,jdbcType=NUMERIC}
+			, #{prodInsdate,jdbcType=DATE}
+			, #{prodProperstock,jdbcType=NUMERIC}
+			, #{prodSize,jdbcType=VARCHAR}
+			, #{prodColor,jdbcType=VARCHAR}
+			, #{prodDelivery,jdbcType=VARCHAR}
+			, #{prodUnit,jdbcType=VARCHAR}
+			, #{prodQtyin,jdbcType=NUMERIC}
+			, #{prodQtysale,jdbcType=NUMERIC}
+			, #{prodMileage,jdbcType=NUMERIC}
+		FROM PROD
+		WHERE PROD_LGU = #{prodLgu,jdbcType=CHAR}
+					
+			
+		
+	</insert>
+	
+	<update id="updateProd" parameterType="ProdVO"></update>
 
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

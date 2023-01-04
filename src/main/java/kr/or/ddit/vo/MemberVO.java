@@ -110,6 +110,7 @@ public class MemberVO implements Serializable {
 	
 	private List<ProdVO> prodList; //has many 관계(1:N)
 	
+	private String memRole;
    
    
 }
