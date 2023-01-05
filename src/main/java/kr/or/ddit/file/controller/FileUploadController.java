@@ -43,7 +43,7 @@ public class FileUploadController {
 		}
 		
 		List<String>metadata = req.getParts().stream() //여러파트
-					.filter((p)->p.getContentType()!=null)
+					.filter((p)->p.getContentType()!=null && p.getContentType().startsWith("image/")) //이미지가 아닌것은 걸러냄
 					.map((p)->{
 						//원본 파일명으론 저장하면 안됨
 						String originalFilename = p.getSubmittedFileName(); //원본파일명, 백도어 공격에 당할 수 있음

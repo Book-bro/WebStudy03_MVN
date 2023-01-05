@@ -14,7 +14,7 @@
 </c:if>
 </head>
 <body>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th>상품아이디</th>
@@ -105,8 +105,8 @@
 		<tr>
 			<th>상품이미지</th>
 			<td>
-				<input class="form-control" type="text" 
-				name="prodImg" value="${prod.prodImg}" />
+				<input type="file" name="prodImage" accept="image/*"/>
+				
 				<span class="text-danger">${errors.prodImg}</span>
 			</td>
 		</tr>

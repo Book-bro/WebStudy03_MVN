@@ -9,6 +9,22 @@
 	</welcome-file-list>
 	
 	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>kr.or.ddit.mvc.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forced</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
 		<filter-name>GeneratePrincipalFilter</filter-name>
 		<filter-class>kr.or.ddit.auth.GeneratePrincipalFilter</filter-class>
 	</filter>
@@ -36,6 +52,14 @@
 <!-- 		<filter-name>AuthorizationFilter</filter-name> -->
 <!-- 		<url-pattern>/*</url-pattern> -->
 <!-- 	</filter-mapping> -->
+	<filter>
+		<filter-name>MultipartFilter</filter-name>
+		<filter-class>kr.or.ddit.mvc.multipart.MultipartFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MultipartFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	
 	<servlet>
 		<servlet-name>frontController</servlet-name>

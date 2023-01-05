@@ -14,6 +14,7 @@ import kr.or.ddit.mvc.annotation.resolvers.HandlerMethodArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttributeMethodProcessor;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParamMethodArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParamMethodArgumentResolver.BadRequestExeption;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPartMethodArgumentResolver;
 import lombok.extern.slf4j.Slf4j;
 import kr.or.ddit.mvc.annotation.resolvers.ServletRequestMethodArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.ServletResponseMethodArgumentResolver;
@@ -28,6 +29,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
 		argumentResolvers.add(new ServletResponseMethodArgumentResolver());
 		argumentResolvers.add(new RequestParamMethodArgumentResolver());
 		argumentResolvers.add(new ModelAttributeMethodProcessor());
+		argumentResolvers.add(new RequestPartMethodArgumentResolver());
 	}
 	
 	private HandlerMethodArgumentResolver findArgumentResolver(Parameter param) {

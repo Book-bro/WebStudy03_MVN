@@ -40,7 +40,6 @@ public class DispatcherServlet extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //		super.service(req, resp);// 없으면 do계열의 메서드를 사용하지 않겠다는뜻
-		req.setCharacterEncoding("UTF-8");
 		
 //		String requestURI = req.getRequestURI();
 //		requestURI = requestURI.substring(req.getContextPath().length());

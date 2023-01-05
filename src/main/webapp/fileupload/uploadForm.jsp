@@ -36,7 +36,7 @@
 		날짜(?) 데이터 : <input type="date" name="datePart"/>
 	</li>
 	<li>
-		파일 데이터 : <input type="file" name="filePart1"/>
+		파일 데이터 : <input type="file" name="filePart1" accept="image/*"/>
 	</li>
 	<li>
 		파일 데이터 : <input type="file" name="filePart2"/>

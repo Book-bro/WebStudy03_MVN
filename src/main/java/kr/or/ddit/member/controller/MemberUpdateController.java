@@ -20,8 +20,11 @@ import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
+import kr.or.ddit.mvc.multipart.MultipartFile;
+import kr.or.ddit.mvc.multipart.MultipartHttpServletRequest;
 import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.ValidationUtils;
@@ -52,9 +55,21 @@ public class MemberUpdateController{
 	public String updateProcess(
 			HttpServletRequest req
 			,@ModelAttribute("member") MemberVO member
-			) {
+			,@RequestPart(value="memImage", required=false) MultipartFile memImage
+			,HttpSession session
+	) throws IOException {
+		
+		member.setMemImage(memImage);
 		
 		String viewName = null;
+		
+		//prop방식
+		if(req instanceof MultipartHttpServletRequest) {  //요청이 원본인지 wrapper인지 판단
+			if(memImage!=null && !memImage.isEmpty()) {
+				member.setMemImg(memImage.getBytes());
+			}
+		}
+		
 		
 		Map<String, List<String>> errors = new LinkedHashMap<>(); 
 		req.setAttribute("errors", errors);
@@ -74,6 +89,10 @@ public class MemberUpdateController{
 				break;
 				
 			default:
+				
+				MemberVO modifiedMember =  service.retrieveMember(member.getMemId());
+				session.setAttribute("authMember", modifiedMember);
+				
 				viewName = "redirect:/mypage.do";
 				break;
 			}

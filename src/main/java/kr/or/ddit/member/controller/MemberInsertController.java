@@ -1,13 +1,16 @@
 package kr.or.ddit.member.controller;
 
 import java.beans.PropertyDescriptor;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +24,11 @@ import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
+import kr.or.ddit.mvc.multipart.MultipartFile;
+import kr.or.ddit.mvc.multipart.MultipartHttpServletRequest;
 import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.validate.InsertGroup;
 import kr.or.ddit.validate.ValidationUtils;
@@ -44,7 +50,14 @@ public class MemberInsertController {
 	public String memberForm(
 			HttpServletRequest req
 			, @ModelAttribute("member") MemberVO member
-	) throws ServletException {
+			, @RequestPart(value="memImage", required=false) MultipartFile memImage
+	) throws ServletException, IOException {
+		
+		//blob방식
+//		if(req instanceof MultipartHttpServletRequest) {  //요청이 원본인지 wrapper인지 판단
+//			MultipartFile memImage = ((MultipartHttpServletRequest)req).getFile("memImage");
+			member.setMemImage(memImage);
+//		}
 		
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
