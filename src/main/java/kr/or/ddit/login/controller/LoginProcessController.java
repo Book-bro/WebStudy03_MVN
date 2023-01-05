@@ -54,6 +54,7 @@ public class LoginProcessController {
 				ServiceResult result = service.authenticate(member);
 	//			2.
 				if(ServiceResult.OK.equals(result)) {
+//					session.set
 					Cookie saveIdCookie = new Cookie("saveId", member.getMemId());
 	//				ex) www[blog].naver.com
 					saveIdCookie.setDomain("localhost"); //도메인 설정

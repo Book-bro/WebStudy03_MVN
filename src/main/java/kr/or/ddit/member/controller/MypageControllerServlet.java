@@ -15,6 +15,7 @@ import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
 import kr.or.ddit.mvc.view.InternalResourceViewResolver;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.MemberVOWrapper;
 
 @Controller
 public class MypageControllerServlet extends HttpServlet{
@@ -25,16 +26,15 @@ public class MypageControllerServlet extends HttpServlet{
 	@RequestMapping("/mypage.do")
 	public String myPage(
 			HttpServletRequest req
-			, HttpSession session
-			) {
-		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
+			, MemberVOWrapper principal
+	) {
+		
+		MemberVO authMember = principal.getRealMember();
 		
 		MemberVO member = service.retrieveMember(authMember.getMemId());
 		
 		req.setAttribute("member", member);
 		
-		String viewName="member/memberView";
-		
-		return viewName;
+		return "member/memberView"; 
 	}
 }

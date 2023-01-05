@@ -14,7 +14,7 @@ public class CookieHttpServletRequestWrapper extends HttpServletRequestWrapper{
 
 	private Map<String, Cookie> cookieMap;
 	
-	public CookieHttpServletRequestWrapper(HttpServletRequest request) {
+	public CookieHttpServletRequestWrapper(HttpServletRequest request) { //원본요청받음
 		super(request);
 		cookieMap = new HashMap<>();
 		Cookie[] cookies =request.getCookies();
