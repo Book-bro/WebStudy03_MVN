@@ -3,6 +3,8 @@ package kr.or.ddit.login.service;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.UserNotFoundException;
@@ -12,7 +14,8 @@ import kr.or.ddit.vo.MemberVO;
 
 public class AuthenticateServiceImpl implements AuthenticateService {
 	private MemberDAO memberDAO = new MemberDAOImpl();
-
+	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	
 	@Override
 	public ServiceResult authenticate(MemberVO member) {
 		MemberVO savedMember = memberDAO.selectMember(member.getMemId());
@@ -21,7 +24,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 		String inputPass = member.getMemPass();
 		String savedPass = savedMember.getMemPass();
 		ServiceResult result = null;
-		if(savedPass.equals(inputPass)) {
+		if(encoder.matches(inputPass, savedPass)) {
 			
 //			member.setMemName(savedMember.getMemName());
 			try {

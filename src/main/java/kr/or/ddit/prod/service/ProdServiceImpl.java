@@ -10,9 +10,8 @@ import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdServiceImpl implements ProdService{
-	//의존관계 형성
+	//의존관계 형성, 결합력 증가
 	private ProdDAO prodDAO = new ProdDAOImpl();
-	
 	
 	@Override
 	public ProdVO retrieveProd(String prodId) {
@@ -41,14 +40,9 @@ public class ProdServiceImpl implements ProdService{
 
 	@Override
 	public ServiceResult modifyProd(ProdVO prod) {
-		ServiceResult result = null;
-		String prodId = prod.getProdId();
-		if(prodId==null) {
-			throw new RuntimeException(String.format("%s는 없는 상품", prodId));
-		}
+		retrieveProd(prod.getProdId());
 		int rowcnt = prodDAO.updateProd(prod);
-		result = rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
-		return result;
+		return rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
 	}
 
 }

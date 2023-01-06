@@ -6,16 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.annotation.stereotype.Controller;
 import kr.or.ddit.mvc.annotation.stereotype.RequestMapping;
@@ -26,12 +25,13 @@ import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.ProdService;
 import kr.or.ddit.prod.service.ProdServiceImpl;
 import kr.or.ddit.validate.InsertGroup;
+import kr.or.ddit.validate.UpdateGroup;
 import kr.or.ddit.validate.ValidationUtils;
 import kr.or.ddit.vo.ProdVO;
 
+//  /prod/prodUpdate.do(GET,POST)
 @Controller
-public class ProdInsertController{
-	
+public class ProdUpdateController {
 	private ProdService service = new ProdServiceImpl();
 	private OthersDAO othersDAO = new OthersDAOImpl();
 	
@@ -40,26 +40,28 @@ public class ProdInsertController{
 		req.setAttribute("buyerList", othersDAO.selectBuyerList(null));
 	}
 	
-	@RequestMapping("/prod/prodInsert.do")
-	public String prodForm(HttpServletRequest req){
+	@RequestMapping("/prod/prodUpdate.do")
+	public String updateForm(
+			HttpServletRequest req
+			, @RequestParam("what") String prodId  //핸들러 어뎁터가 처리해줌
+	) {
 		addAttribute(req);
+		
+		ProdVO prod = service.retrieveProd(prodId); 
+		req.setAttribute("prod", prod); 
 		return "prod/prodForm";
 	}
-
-	@RequestMapping(value="/prod/prodInsert.do", method=RequestMethod.POST)
-	public String insertProcess(
-		@ModelAttribute("prod") ProdVO prod	
-		, HttpServletRequest req
-		, HttpSession session
-		,@RequestPart("prodImage") MultipartFile prodImage
-	) throws IOException, ServletException {
+	
+	@RequestMapping(value="/prod/prodUpdate.do",method=RequestMethod.POST)
+	public String updateProd(
+			@ModelAttribute("prod") ProdVO prod  //command Object 
+			,HttpServletRequest req
+			,@RequestPart(value="prodImage", required=false) MultipartFile prodImage
+	) throws IOException {
 		addAttribute(req);
 		
 		prod.setProdImage(prodImage);
 		
-		//3tier방식
-		//prodImage -> prodImg
-//			1.저장(prodImages 파일)
 		String saveFolderURL = "/resources/prodImages";
 		ServletContext application = req.getServletContext(); //어플리케이션 기본객체
 		String saveFolderPath = application.getRealPath(saveFolderURL);
@@ -69,17 +71,12 @@ public class ProdInsertController{
 		}
 		prod.saveTo(saveFolder);
 		
-//			2.metadata추출 (저장한 파일의 url)
-//			prodImage.transferTo(new File(saveFolder, saveFileName));
-//			3.db 저장 : prodImg를 만듬
-			
-		
-		Map<String, List<String>> errors = new HashMap<>();
-		req.setAttribute("errors", errors);
-		boolean valid = ValidationUtils.validate(prod, errors, InsertGroup.class);
 		String viewName = null;
+		Map<String, List<String>> errors = new HashMap<>();
+		req.setAttribute("errors", errors); //검증 실패시
+		boolean valid = ValidationUtils.validate(prod, errors, UpdateGroup.class);
 		if(valid) {
-			ServiceResult result = service.createProd(prod);
+			ServiceResult result = service.modifyProd(prod);
 			if(ServiceResult.OK == result) {
 				viewName = "redirect:/prod/prodView.do?what="+prod.getProdId();
 			}else {
@@ -92,20 +89,3 @@ public class ProdInsertController{
 		return viewName;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

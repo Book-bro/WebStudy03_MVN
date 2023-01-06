@@ -25,6 +25,13 @@
   	</build>
   	
   	<dependencies>
+  		<!-- 암호화 지원 -->
+  		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-crypto</artifactId>
+		    <version>4.2.15.RELEASE</version>
+		</dependency>
+  	
 	  	<dependency>
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>javax.servlet-api</artifactId>
