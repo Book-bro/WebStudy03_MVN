@@ -18,7 +18,7 @@ public class LogoutController{
 	@RequestMapping(value="/login/logout.do",method=RequestMethod.POST)
 	public String process(HttpSession session) {
 //		session.removeAttribute("authMember");
-		session.invalidate();
+		session.invalidate(); //세션 삭제
 		
 		return "redirect:/";
 	}

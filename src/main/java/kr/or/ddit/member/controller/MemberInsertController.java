@@ -41,11 +41,13 @@ import kr.or.ddit.vo.MemberVO;
 public class MemberInsertController {
 	private MemberService service = new MemberServiceImpl();
 	
+	//get 방식으로 들어옴
 	@RequestMapping("/member/memberInsert.do")
 	public String memberForm()  {
 		return "member/memberForm";
 	}
 	
+	//post 방식
 	@RequestMapping(value="/member/memberInsert.do", method=RequestMethod.POST)
 	public String memberForm(
 			HttpServletRequest req
@@ -56,7 +58,7 @@ public class MemberInsertController {
 		//blob방식
 //		if(req instanceof MultipartHttpServletRequest) {  //요청이 원본인지 wrapper인지 판단
 //			MultipartFile memImage = ((MultipartHttpServletRequest)req).getFile("memImage");
-			member.setMemImage(memImage);
+		member.setMemImage(memImage);
 //		}
 		
 		Map<String, List<String>> errors = new LinkedHashMap<>();

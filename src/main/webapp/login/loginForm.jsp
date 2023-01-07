@@ -10,6 +10,7 @@
 	<script>
 		alert("${message}");
 	</script>
+	<%-- 세션에 저장된 메시지 지우기 --%>
 	<c:remove var="message" scope="session"/>
 </c:if>
 </head>
